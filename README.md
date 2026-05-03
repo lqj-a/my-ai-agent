@@ -36,6 +36,9 @@ my-ai-agent/
 
 ## 核心架构
 
+### 详细架构
+https://github.com/lqj-a/my-ai-agent/blob/main/architecture.md
+
 ### 智能体层级
 
 ```
