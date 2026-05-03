@@ -156,14 +156,14 @@ sequenceDiagram
     participant LLM
 
     User->>Controller: GET /ai/my_app/chat/sse
-    Controller->>MyApp: doChatByStream(message, chatId)
-    MyApp->>Memory: 加载对话历史 最近10条
+    Controller->>MyApp: doChatByStream
+    MyApp->>Memory: 加载对话历史
     MyApp->>RAG: 查询重写和向量检索
     RAG-->>MyApp: 返回相关文档上下文
-    MyApp->>ChatClient: 构建请求 含历史和RAG上下文
+    MyApp->>ChatClient: 构建请求
     ChatClient->>LLM: 调用 DashScope API
     LLM-->>ChatClient: 流式返回响应
-    ChatClient-->>MyApp: 返回 Flux String
+    ChatClient-->>MyApp: 返回数据流
     MyApp->>Memory: 保存新对话
     MyApp-->>Controller: SSE 流式响应
     Controller-->>User: 实时返回结果
@@ -180,14 +180,14 @@ sequenceDiagram
     participant Tools
 
     User->>Controller: GET /ai/my_superagent/chat
-    Controller->>MySuperAgent: runStream(message)
-    MySuperAgent->>BaseAgent: 启动状态机 IDLE to RUNNING
+    Controller->>MySuperAgent: runStream
+    MySuperAgent->>BaseAgent: 启动状态机
     
     loop 最多20步
-        BaseAgent->>MySuperAgent: think() 推理下一步
+        BaseAgent->>MySuperAgent: think 推理下一步
         MySuperAgent->>LLM: 调用大模型决策
         LLM-->>MySuperAgent: 返回工具调用决策
-        MySuperAgent->>BaseAgent: act() 执行动作
+        MySuperAgent->>BaseAgent: act 执行动作
         BaseAgent->>Tools: 调用具体工具
         Tools-->>BaseAgent: 返回执行结果
         BaseAgent-->>User: SSE推送步骤结果
@@ -199,7 +199,7 @@ sequenceDiagram
     end
     
     BaseAgent-->>Controller: 完成执行
-    Controller-->>User: 关闭SSE连接
+    Controller-->>User: 关闭连接
 ```
 
 ## 技术栈
