@@ -1,0 +1,22 @@
+package com.myagent.myaiagent.rag;
+
+import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.rag.generation.augmentation.ContextualQueryAugmenter;
+
+/**
+ * 创建上下文查询增强器的工厂
+ */
+public class MyAppContextualQueryAugmenterFactory {
+
+    public static ContextualQueryAugmenter createInstance() {
+        PromptTemplate emptyContextPromptTemplate = new PromptTemplate("""
+                你应该输出下面的内容：
+                抱歉，我只能回答运维相关的问题，别的没办法帮到您哦，
+                有问题可以联系客服热线：xxxx-xxxxxxx
+                """);
+        return ContextualQueryAugmenter.builder()
+                .allowEmptyContext(false)  //不允许空上下文
+                .emptyContextPromptTemplate(emptyContextPromptTemplate)
+                .build();
+    }
+}

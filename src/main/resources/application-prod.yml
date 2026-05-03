@@ -1,0 +1,24 @@
+spring:
+  ai:
+    dashscope:
+      api-key: "你的 API key"
+      chat:
+        options:
+          model: qwen-max
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        dimensions: 1536
+        distance-type: COSINE_DISTANCE
+        max-document-batch-size: 10000
+    mcp:
+      client:
+        stdio:
+          servers-configuration: classpath:mcp-servers.json
+  datasource:
+    url: jdbc:postgresql://localhost:5432/your_db
+    username: your_user
+    password: your_password
+
+search-api:
+  api-key: your_serach_api_key
