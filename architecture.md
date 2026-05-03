@@ -157,13 +157,13 @@ sequenceDiagram
 
     User->>Controller: GET /ai/my_app/chat/sse
     Controller->>MyApp: doChatByStream(message, chatId)
-    MyApp->>Memory: 加载对话历史(最近10条)
-    MyApp->>RAG: 查询重写 + 向量检索
+    MyApp->>Memory: 加载对话历史 最近10条
+    MyApp->>RAG: 查询重写和向量检索
     RAG-->>MyApp: 返回相关文档上下文
-    MyApp->>ChatClient: 构建请求(含历史+RAG上下文)
+    MyApp->>ChatClient: 构建请求 含历史和RAG上下文
     ChatClient->>LLM: 调用 DashScope API
     LLM-->>ChatClient: 流式返回响应
-    ChatClient-->>MyApp: Flux<String>
+    ChatClient-->>MyApp: 返回 Flux String
     MyApp->>Memory: 保存新对话
     MyApp-->>Controller: SSE 流式响应
     Controller-->>User: 实时返回结果
@@ -181,19 +181,19 @@ sequenceDiagram
 
     User->>Controller: GET /ai/my_superagent/chat
     Controller->>MySuperAgent: runStream(message)
-    MySuperAgent->>BaseAgent: 启动状态机(IDLE→RUNNING)
+    MySuperAgent->>BaseAgent: 启动状态机 IDLE to RUNNING
     
     loop 最多20步
-        BaseAgent->>MySuperAgent: think() - 推理下一步
+        BaseAgent->>MySuperAgent: think() 推理下一步
         MySuperAgent->>LLM: 调用大模型决策
         LLM-->>MySuperAgent: 返回工具调用决策
-        MySuperAgent->>BaseAgent: act() - 执行动作
+        MySuperAgent->>BaseAgent: act() 执行动作
         BaseAgent->>Tools: 调用具体工具
         Tools-->>BaseAgent: 返回执行结果
         BaseAgent-->>User: SSE推送步骤结果
         
         alt 检测到 TerminateTool
-            BaseAgent->>BaseAgent: 状态→FINISHED
+            BaseAgent->>BaseAgent: 状态变为FINISHED
             break 结束循环
         end
     end
